@@ -13,28 +13,38 @@ jobs:
         os: [ubuntu-latest]
         # os: [ubuntu-latest, macOS-latest, windows-latest]
         # use this to specify what resolvers and ghc to use
-        stack-yaml: ["--stack-yaml=stack-8.4.4.yaml"]
+        stack-yaml: ["--stack-yaml=stack-8.10.4.yaml"]
 
     runs-on: ${{ matrix.os }}
     steps:  
     
-    - name: 'GitHub actions env workaround'
+    - name: 👺 GitHub actions env workaround
       run: 'echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> $GITHUB_ENV'
       
-    - name: Install OS Packages
+    - name: 💽 Install OS Packages
       uses: mstksg/get-package@v1
 
-    - uses: actions/checkout@v1
+    - name: 📥 Checkout repository
+      uses: actions/checkout@v1
 
-    - name: Setup stack
+    - name: 🧰 Setup stack
       uses: mstksg/setup-stack@v1
 
-    - name: Install dependencies
-      run: stack --no-terminal --install-ghc $ARGS test --bench --only-dependencies
+    - name: 💾 Cache Dependencies
+      id: cache
+      uses: actions/cache@v1
+      with:
+        path: ~/.stack
+        key: ${{ matrix.os }}-${{ hashFiles('stack.yaml') }}
+
+    - name: 📸 Build Snapshot
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: |
+        stack --no-terminal $ARGS test --bench --only-snapshot
       env:
         ARGS: ${{ matrix.stack-yaml }}
 
-    - name: Build
-      run: stack --no-terminal $ARGS test --bench --no-run-benchmarks --haddock --no-haddock-deps
+    - name: 🔨 Build & Test
+      run: stack --no-terminal $ARGS test --bench --haddock --no-haddock-deps --no-run-benchmarks
       env:
         ARGS: ${{ matrix.stack-yaml }}
