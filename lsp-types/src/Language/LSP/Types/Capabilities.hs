@@ -14,6 +14,7 @@ import Language.LSP.Types.ClientCapabilities
 import Language.LSP.Types.ServerCapabilities
 import Language.LSP.Types.WorkspaceEdit
 import Language.LSP.Types
+import Language.LSP.Types.CallHierarchy
 
 -- | Capabilities for full conformance to the current (v3.15) LSP specification.
 fullCaps :: ClientCapabilities
@@ -126,6 +127,7 @@ capsForVersion (LSPVersion maj min) = ClientCapabilities (Just w) (Just td) (Jus
           (Just publishDiagnosticsCapabilities)
           (since 3 10 foldingRangeCapability)
           (since 3 5 (SelectionRangeClientCapabilities dynamicReg))
+          (since 3 16 (CallHierarchyClientCapabilities dynamicReg))
     sync =
       TextDocumentSyncClientCapabilities
         dynamicReg

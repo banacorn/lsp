@@ -51,6 +51,7 @@ import           Language.LSP.Types.WorkspaceFolders
 import           Language.LSP.Types.WorkspaceSymbol
 import           Language.LSP.Types.Message
 import           Control.Lens.TH
+import Language.LSP.Types.CallHierarchy
 
 -- TODO: This is out of date and very unmantainable, use TH to call all these!!
 
@@ -354,3 +355,6 @@ makeFieldsNoPrefix ''SignatureHelp
 
 -- Static registration
 makeFieldsNoPrefix ''StaticRegistrationOptions
+
+-- Call Hierarchy 
+makeFieldsNoPrefix ''CallHierarchyClientCapabilities
