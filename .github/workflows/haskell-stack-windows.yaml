@@ -15,14 +15,14 @@ jobs:
           # - "--stack-yaml=stack-8.4.4.yaml"
           # - "--stack-yaml=stack-8.6.5.yaml"
           # - "--stack-yaml=stack-8.8.4.yaml"
-          - "--stack-yaml=./stack-8.10.4.yaml"
+          - "--stack-yaml=stack-8.10.4.yaml"
 
     runs-on: ${{ matrix.os }}
     steps:
     - name: 📥 Checkout repository
       uses: actions/checkout@v2
 
-    - name: 🧰 Install stack
+    - name: ⏬ Install stack
       #if: steps.stack-programs-dir.outputs.cache-hit != 'true'
       # this step is needed to get stack.exe into PATH, for now
       run: |
@@ -33,7 +33,7 @@ jobs:
         which ./stack
         ./stack --version
 
-    - name: 🧰 Install GHC
+    - name: ⏬ Install GHC
       # if: steps.stack-programs-dir.outputs.cache-hit != 'true'
       # set PATH=C:\Users\runneradmin\AppData\Local\Programs\stack\local\bin;%PATH%
       run: |
@@ -41,7 +41,13 @@ jobs:
       env:
         ARGS: ${{ matrix.stack-yaml }}
 
-    - name: ⏬ Build Dependencies
+    - name: 📸 Build Snapshot
+      run: |
+        ./stack --no-terminal $ARGS build --bench --only-snapshot
+      env:
+        ARGS: ${{ matrix.stack-yaml }}
+
+    - name: 🧰 Build Dependencies
       run: |
         ./stack --no-terminal $ARGS build --only-dependencies
       env:
