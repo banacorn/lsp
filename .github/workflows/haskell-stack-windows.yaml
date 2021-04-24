@@ -1,4 +1,4 @@
-name: Haskell CI - Stack
+name: Haskell CI - Stack (Windows)
 
 on: [push, pull_request]
 
@@ -7,7 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macOS-latest]
+        os: [windows-latest]
         # use this to specify what resolvers and ghc to use
         stack-yaml: 
           - "--stack-yaml=stack-8.4.4.yaml"
@@ -16,19 +16,15 @@ jobs:
           - "--stack-yaml=stack-8.10.4.yaml"
 
     runs-on: ${{ matrix.os }}
-    steps:  
-    
+    steps:
     - name: 👺 GitHub actions env workaround
-      run: 'echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> $GITHUB_ENV'
-      
-    - name: 💽 Install OS Packages
-      uses: mstksg/get-package@v1
+      run: 'echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append'
 
     - name: 📥 Checkout repository
       uses: actions/checkout@v1
 
-    - name: 🧰 Setup stack
-      uses: mstksg/setup-stack@v1
+    - name: 🧰 Setup Stack
+      uses: mstksg/setup-stack@69e4283faeb7a89f26326daa36e9cc0fa7a023bd
 
     - name: 💾 Cache Dependencies
       id: cache
@@ -40,6 +36,12 @@ jobs:
     - name: 📸 Build Snapshot
       if: steps.cache.outputs.cache-hit != 'true'
       run: |
+        curl -O http://repo.msys2.org/msys/x86_64/msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz
+        curl -O http://repo.msys2.org/msys/x86_64/msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz.sig
+        stack --no-terminal exec -- pacman -U --noconfirm msys2-keyring-r21.b39fb11-1-any.pkg.tar.xz
+        stack --no-terminal exec -- pacman -Syu --no-confirm
+        stack --no-terminal exec -- pacman -S --noconfirm mingw-w64-x86_64-pcre
+        stack --no-terminal exec -- pacman -S --noconfirm mingw-w64-x86_64-pkg-config
         stack --no-terminal $ARGS build --bench --only-snapshot
       env:
         ARGS: ${{ matrix.stack-yaml }}
@@ -49,9 +51,3 @@ jobs:
         stack --no-terminal $ARGS build --bench --haddock --no-haddock-deps --no-run-benchmarks
       env:
         ARGS: ${{ matrix.stack-yaml }}
-
-    # - name: 🤖 Test
-    #   run: | 
-    #     stack --no-terminal $ARGS test --bench --haddock --no-haddock-deps --no-run-benchmarks
-    #   env:
-    #     ARGS: ${{ matrix.stack-yaml }}
