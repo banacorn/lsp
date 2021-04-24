@@ -40,11 +40,13 @@ jobs:
     - name: 📸 Build Snapshot
       if: steps.cache.outputs.cache-hit != 'true'
       run: |
-        stack --no-terminal $ARGS test --bench --only-snapshot
+        stack --no-terminal $ARGS build --bench --only-snapshot
       env:
         ARGS: ${{ matrix.stack-yaml }}
 
     - name: 🔨 Build & Test
-      run: stack --no-terminal $ARGS test --bench --haddock --no-haddock-deps --no-run-benchmarks
+      run: | 
+        stack --no-terminal $ARGS build --bench --haddock --no-haddock-deps --no-run-benchmarks
+        stack --no-terminal $ARGS test --bench --haddock --no-haddock-deps --no-run-benchmarks
       env:
         ARGS: ${{ matrix.stack-yaml }}
