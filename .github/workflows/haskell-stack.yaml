@@ -44,9 +44,14 @@ jobs:
       env:
         ARGS: ${{ matrix.stack-yaml }}
 
-    - name: 🔨 Build & Test
+    - name: 🔨 Build
       run: | 
         stack --no-terminal $ARGS build --bench --haddock --no-haddock-deps --no-run-benchmarks
+      env:
+        ARGS: ${{ matrix.stack-yaml }}
+
+    - name: 🤖 Test
+      run: | 
         stack --no-terminal $ARGS test --bench --haddock --no-haddock-deps --no-run-benchmarks
       env:
         ARGS: ${{ matrix.stack-yaml }}
