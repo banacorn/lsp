@@ -2,18 +2,18 @@ name: Haskell CI (Stack)
 
 on: [push, pull_request]
 
-
-
-
 jobs:
   build:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
-        # os: [ubuntu-latest, macOS-latest, windows-latest]
+        os: [ubuntu-latest, macOS-latest, windows-latest]
         # use this to specify what resolvers and ghc to use
-        stack-yaml: ["--stack-yaml=stack-8.10.4.yaml"]
+        stack-yaml: 
+          - "--stack-yaml=stack-8.4.4.yaml"
+          - "--stack-yaml=stack-8.6.4.yaml"
+          - "--stack-yaml=stack-8.8.3.yaml"
+          - "--stack-yaml=stack-8.10.4.yaml"
 
     runs-on: ${{ matrix.os }}
     steps:  
@@ -44,14 +44,14 @@ jobs:
       env:
         ARGS: ${{ matrix.stack-yaml }}
 
-    - name: 🔨 Build
+    - name: 🔨 Build (no testing)
       run: | 
         stack --no-terminal $ARGS build --bench --haddock --no-haddock-deps --no-run-benchmarks
       env:
         ARGS: ${{ matrix.stack-yaml }}
 
-    - name: 🤖 Test
-      run: | 
-        stack --no-terminal $ARGS test --bench --haddock --no-haddock-deps --no-run-benchmarks
-      env:
-        ARGS: ${{ matrix.stack-yaml }}
+    # - name: 🤖 Test
+    #   run: | 
+    #     stack --no-terminal $ARGS test --bench --haddock --no-haddock-deps --no-run-benchmarks
+    #   env:
+    #     ARGS: ${{ matrix.stack-yaml }}
