@@ -164,6 +164,7 @@ inferServerCapabilities clientCaps o h =
     , _executeCommandProvider           = executeCommandProvider
     , _selectionRangeProvider           = supportedBool STextDocumentSelectionRange
     , _workspaceSymbolProvider          = supported SWorkspaceSymbol
+    , _callHierarchyProvider            = callHierarchyProvider
     , _workspace                        = Just workspace
     -- TODO: Add something for experimental
     , _experimental                     = Nothing :: Maybe Value

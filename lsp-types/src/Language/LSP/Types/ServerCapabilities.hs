@@ -29,6 +29,7 @@ import Language.LSP.Types.SignatureHelp
 import Language.LSP.Types.TextDocument
 import Language.LSP.Types.TypeDefinition
 import Language.LSP.Types.Utils
+import Language.LSP.Types.CallHierarchy
 
 -- ---------------------------------------------------------------------
 
@@ -119,6 +120,8 @@ data ServerCapabilities =
     , _selectionRangeProvider           :: Maybe (Bool |? SelectionRangeOptions |? SelectionRangeRegistrationOptions)
       -- | The server provides workspace symbol support.
     , _workspaceSymbolProvider          :: Maybe Bool
+      -- | The server provides call hierarchy support.
+    , _callHierarchyProvider            :: Maybe (Bool |? CallHierarchyOptions |? CallHierarchyRegistrationOptions)
       -- | Workspace specific server capabilities
     , _workspace                        :: Maybe WorkspaceServerCapabilities
       -- | Experimental server capabilities.

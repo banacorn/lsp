@@ -5,7 +5,10 @@
 module Language.LSP.Types.CallHierarchy where
 
 import Data.Aeson.TH
+import Language.LSP.Types.Progress
+import Language.LSP.Types.TextDocument
 import Language.LSP.Types.Utils
+import Language.LSP.Types.StaticRegistrationOptions
 
 data CallHierarchyClientCapabilities = CallHierarchyClientCapabilities
   { -- | Whether implementation supports dynamic registration. If this is set to
@@ -19,3 +22,17 @@ data CallHierarchyClientCapabilities = CallHierarchyClientCapabilities
   deriving (Show, Read, Eq)
 
 deriveJSON lspOptions ''CallHierarchyClientCapabilities
+
+-- -------------------------------------
+
+makeExtendingDatatype "CallHierarchyOptions" [''WorkDoneProgressOptions] []
+deriveJSON lspOptions ''CallHierarchyOptions
+
+makeExtendingDatatype
+  "CallHierarchyRegistrationOptions"
+  [ ''TextDocumentRegistrationOptions,
+    ''CallHierarchyOptions,
+    ''StaticRegistrationOptions
+  ]
+  []
+deriveJSON lspOptions ''CallHierarchyRegistrationOptions
