@@ -78,6 +78,7 @@ data Method (f :: From) (t :: MethodType) where
   -- Call Hierarchy
   TextDocumentCallHierarchy          :: Method FromClient Request
   CallHierarchyIncomingCalls         :: Method FromClient Request
+  CallHierarchyOutgoingCalls         :: Method FromClient Request
 
 -- ServerMethods
   -- Window
@@ -150,6 +151,7 @@ data SMethod (m :: Method f t) where
   STextDocumentSelectionRange         :: SMethod TextDocumentSelectionRange
   STextDocumentCallHierarchy          :: SMethod TextDocumentCallHierarchy
   SCallHierarchyIncomingCalls         :: SMethod CallHierarchyIncomingCalls
+  SCallHierarchyOutgoingCalls         :: SMethod CallHierarchyOutgoingCalls
 
   SWindowShowMessage                  :: SMethod WindowShowMessage
   SWindowShowMessageRequest           :: SMethod WindowShowMessageRequest
@@ -275,6 +277,7 @@ instance FromJSON SomeClientMethod where
   parseJSON (A.String "textDocument/selectionRange")         = pure $ SomeClientMethod STextDocumentFoldingRange
   parseJSON (A.String "textDocument/prepareCallHierarchy")   = pure $ SomeClientMethod STextDocumentCallHierarchy
   parseJSON (A.String "callHierarchy/incomingCalls")         = pure $ SomeClientMethod SCallHierarchyIncomingCalls
+  parseJSON (A.String "callHierarchy/outgoingCalls")         = pure $ SomeClientMethod SCallHierarchyOutgoingCalls
   parseJSON (A.String "window/workDoneProgress/cancel")      = pure $ SomeClientMethod SWindowWorkDoneProgressCancel
 -- Cancelling
   parseJSON (A.String "$/cancelRequest")                     = pure $ SomeClientMethod SCancelRequest
@@ -369,6 +372,7 @@ instance A.ToJSON (SMethod m) where
   toJSON STextDocumentDocumentLink           = A.String "textDocument/documentLink"
   toJSON STextDocumentCallHierarchy          = A.String "textDocument/prepareCallHierarchy"
   toJSON SCallHierarchyIncomingCalls         = A.String "callHierarchy/incomingCalls"
+  toJSON SCallHierarchyOutgoingCalls         = A.String "callHierarchy/outgoingCalls"
   toJSON SDocumentLinkResolve                = A.String "documentLink/resolve"
   toJSON SWindowWorkDoneProgressCancel       = A.String "window/workDoneProgress/cancel"
 -- Server

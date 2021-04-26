@@ -124,6 +124,7 @@ type family MessageParams (m :: Method f t) :: Type where
   -- Call Hierarchy 
   MessageParams TextDocumentCallHierarchy          = CallHierarchyPrepareParams
   MessageParams CallHierarchyIncomingCalls         = CallHierarchyIncomingCallsParams
+  MessageParams CallHierarchyOutgoingCalls         = CallHierarchyOutgoingCallsParams
 -- Server
     -- Window
   MessageParams WindowShowMessage                  = ShowMessageParams
@@ -200,6 +201,7 @@ type family ResponseResult (m :: Method f Request) :: Type where
   -- Call Hierarchy
   ResponseResult TextDocumentCallHierarchy     = List CallHierarchyItem
   ResponseResult CallHierarchyIncomingCalls    = List CallHierarchyIncomingCall
+  ResponseResult CallHierarchyOutgoingCalls    = List CallHierarchyOutgoingCall
   -- Custom can be either a notification or a message
 -- Server
   -- Window

@@ -57,7 +57,8 @@ clientMethods = [
   ,"textDocument/rename"
   ,"textDocument/prepareRename"
   ,"textDocument/prepareCallHierarchy"
-  ,"callHierarchy/incomingCalls"
+  ,"callHierarchy/incomingCalls",
+  ,"callHierarchy/outgoingCalls"
   ]
 
 serverMethods :: [T.Text]
