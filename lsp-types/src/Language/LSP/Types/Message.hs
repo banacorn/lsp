@@ -123,6 +123,7 @@ type family MessageParams (m :: Method f t) :: Type where
   MessageParams TextDocumentSelectionRange         = SelectionRangeParams
   -- Call Hierarchy 
   MessageParams TextDocumentCallHierarchy          = CallHierarchyPrepareParams
+  MessageParams CallHierarchyIncomingCalls         = CallHierarchyIncomingCallsParams
 -- Server
     -- Window
   MessageParams WindowShowMessage                  = ShowMessageParams
@@ -198,6 +199,7 @@ type family ResponseResult (m :: Method f Request) :: Type where
   ResponseResult TextDocumentSelectionRange    = List SelectionRange
   -- Call Hierarchy
   ResponseResult TextDocumentCallHierarchy     = List CallHierarchyItem
+  ResponseResult CallHierarchyIncomingCalls    = List CallHierarchyIncomingCall
   -- Custom can be either a notification or a message
 -- Server
   -- Window

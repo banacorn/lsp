@@ -77,3 +77,24 @@ data CallHierarchyItem = CallHierarchyItem
   deriving (Read, Show, Eq)
 
 deriveJSON lspOptions ''CallHierarchyItem
+
+-- -------------------------------------
+
+makeExtendingDatatype
+  "CallHierarchyIncomingCallsParams"
+  [''WorkDoneProgressParams, ''PartialResultParams]
+  [("_item", [t|CallHierarchyItem|])]
+deriveJSON lspOptions ''CallHierarchyIncomingCallsParams
+
+-- -------------------------------------
+
+data CallHierarchyIncomingCall = CallHierarchyIncomingCall
+  { -- | The item that makes the call.
+    _from :: CallHierarchyItem,
+    -- | The ranges at which the calls appear. This is relative to the caller
+    -- denoted by the `from` field.
+    _fromRanges :: List Range
+  }
+  deriving (Read, Show, Eq)
+
+deriveJSON lspOptions ''CallHierarchyIncomingCall
