@@ -60,6 +60,7 @@ import Data.Aeson
 import Data.Aeson.TH
 import Data.Text (Text)
 import GHC.Generics
+import Language.LSP.Types.CallHierarchy
 
 -- ---------------------------------------------------------------------
 -- PARAMS definition
@@ -120,6 +121,8 @@ type family MessageParams (m :: Method f t) :: Type where
   MessageParams TextDocumentFoldingRange           = FoldingRangeParams
   -- Selection Range
   MessageParams TextDocumentSelectionRange         = SelectionRangeParams
+  -- Call Hierarchy 
+  MessageParams TextDocumentCallHierarchy          = CallHierarchyPrepareParams
 -- Server
     -- Window
   MessageParams WindowShowMessage                  = ShowMessageParams
@@ -193,6 +196,8 @@ type family ResponseResult (m :: Method f Request) :: Type where
   -- FoldingRange
   ResponseResult TextDocumentFoldingRange      = List FoldingRange
   ResponseResult TextDocumentSelectionRange    = List SelectionRange
+  -- Call Hierarchy
+  ResponseResult TextDocumentCallHierarchy     = List CallHierarchyItem
   -- Custom can be either a notification or a message
 -- Server
   -- Window

@@ -56,6 +56,7 @@ clientMethods = [
   ,"documentLink/resolve"
   ,"textDocument/rename"
   ,"textDocument/prepareRename"
+  ,"textDocument/prepareCallHierarchy"
   ]
 
 serverMethods :: [T.Text]
