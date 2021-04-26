@@ -14,7 +14,6 @@ import Language.LSP.Types.ClientCapabilities
 import Language.LSP.Types.ServerCapabilities
 import Language.LSP.Types.WorkspaceEdit
 import Language.LSP.Types
-import Language.LSP.Types.CallHierarchy
 
 -- | Capabilities for full conformance to the current (v3.15) LSP specification.
 fullCaps :: ClientCapabilities

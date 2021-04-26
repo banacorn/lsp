@@ -4,16 +4,16 @@
 
 module Language.LSP.Types.CallHierarchy where
 
+import Data.Aeson
 import Data.Aeson.TH
+import Language.LSP.Types.Common
+import Language.LSP.Types.DocumentSymbol
+import Language.LSP.Types.Location
 import Language.LSP.Types.Progress
 import Language.LSP.Types.StaticRegistrationOptions
 import Language.LSP.Types.TextDocument
-import Language.LSP.Types.Utils
-import Language.LSP.Types.DocumentSymbol
-import Language.LSP.Types.Common
 import Language.LSP.Types.Uri
-import Language.LSP.Types.Location
-import Data.Aeson
+import Language.LSP.Types.Utils
 
 data CallHierarchyClientCapabilities = CallHierarchyClientCapabilities
   { -- | Whether implementation supports dynamic registration. If this is set to
@@ -46,9 +46,7 @@ deriveJSON lspOptions ''CallHierarchyRegistrationOptions
 
 makeExtendingDatatype
   "CallHierarchyPrepareParams"
-  [ ''WorkDoneProgressParams
-  , ''TextDocumentPositionParams
-  ]
+  [''TextDocumentPositionParams, ''WorkDoneProgressParams]
   []
 deriveJSON lspOptions ''CallHierarchyPrepareParams
 
@@ -64,7 +62,7 @@ data CallHierarchyItem = CallHierarchyItem
     -- | More detail for this item, e.g. the signature of a function.
     _detail :: Maybe String,
     -- | The resource identifier of this item.
-    uri :: Uri,
+    _uri :: Uri,
     -- | The range enclosing this symbol not including leading/trailing whitespace
     -- but everything else, e.g. comments and code.
     _range :: Range,
@@ -74,7 +72,7 @@ data CallHierarchyItem = CallHierarchyItem
     _selectionRange :: Range,
     -- | A data entry field that is preserved between a call hierarchy prepare and
     -- incoming calls or outgoing calls requests.
-    _xdata   :: Maybe Value
+    _xdata :: Maybe Value
   }
   deriving (Read, Show, Eq)
 
